@@ -147,7 +147,7 @@ RUN cd /opt && \
     fix-permissions /opt/fastcq /usr/local/bin
 
 
-# htbioinformatics2019
+# htbioinformatics2019, RT#15527
 # http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#obtaining-bowtie-2
 RUN conda config --append channels bioconda && \
     conda install \
@@ -166,13 +166,27 @@ RUN cd /opt && \
 
 
 # Bioconductor
-RUN Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager") ; BiocManager::install()' && \
-    Rscript -e 'BiocManager::install(c("edgeR", "GenomicRanges", "rtracklayer"))' && \
+# edgeR, GenomicRanges, rtracklayer: htbioinformatics
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        libomp-dev r-cran-xml && \
+    echo 'if (!requireNamespace("BiocManager", quietly = TRUE)) '\
+            'install.packages("BiocManager") ; ' \
+            'BiocManager::install()' \
+        | Rscript - && \
+    echo 'BiocManager::install(c('\
+            '"edgeR", ' \
+            '"GenomicRanges", ' \
+            '"rtracklayer" ' \
+            '"BSgenome.Hsapiens.NCBI.GRCh38" ' \
+        '))' | Rscript - && \
     fix-permissions /usr/local/lib/R/site-library && \
     clean-layer.sh
 
 # samtools: htbioinformatics, http://www.htslib.org/download/
 # pysam:    same --^
+# macs2:    "
 RUN \
     mkdir /opt/samtools && \
     cd /opt/samtools && \
@@ -184,16 +198,9 @@ RUN \
     make install && \
     pip install --no-cache-dir \
         pysam \
-	&& \
-    clean-layer.sh
-
-
-# macs2: htbioinformatics
-RUN pip install --no-cache-dir \
         macs2 \
 	&& \
     clean-layer.sh
-
 
 
 ENV CC=clang CXX=clang++
