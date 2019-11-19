@@ -35,14 +35,42 @@ RUN apt-get update && \
 ARG CRAN_URL
 
 RUN \
-    Rscript -e "install.packages(c('repr','IRdisplay','evaluate','crayon','pbdZMQ','devtools','uuid','digest'), repos='${CRAN_URL}', clean=TRUE)" && \
+    echo "install.packages(c(" \
+            "'repr', " \
+            "'IRdisplay'," \
+            "'evaluate'," \
+            "'crayon',"\
+            "'pbdZMQ',"\
+            "'devtools',"\
+            "'uuid',"\
+            "'digest'"\
+        "), repos='${CRAN_URL}', clean=TRUE)" | Rscript - && \
     Rscript -e "devtools::install_github('IRkernel/IRkernel')" && \
     Rscript -e 'IRkernel::installspec(user = FALSE)'
 RUN jupyter kernelspec remove -f python3
 
 # Packages from jupyter r-notebook
 RUN \
-    Rscript -e "install.packages(c('plyr', 'devtools', 'tidyverse', 'shiny', 'markdown', 'forecast', 'RSQLite', 'reshape2', 'nycflights13', 'caret', 'RCurl', 'crayon', 'randomForest', 'htmltools', 'sparklyr', 'htmlwidgets', 'hexbin', 'caTools'), repos='${CRAN_URL}', clean=TRUE)" && \
+    echo "install.packages(c(" \
+            "'plyr', "\
+            "'devtools', "\
+            "'tidyverse', "\
+            "'shiny', "\
+            "'markdown', "\
+            "'forecast', "\
+            "'RSQLite', "\
+            "'reshape2', "\
+            "'nycflights13', "\
+            "'caret', "\
+            "'RCurl', "\
+            "'crayon', "\
+            "'randomForest', "\
+            "'htmltools', "\
+            "'sparklyr', "\
+            "'htmlwidgets', "\
+            "'hexbin', "\
+            "'caTools' " \
+        "), repos='${CRAN_URL}', clean=TRUE)" | Rscript - && \
     fix-permissions /usr/local/lib/R/site-library
 
 #
