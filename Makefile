@@ -16,7 +16,8 @@ VER_CV=1.8.0
 PACK_PATH=/m/scicomp/software/anaconda-ci/aalto-jupyter-anaconda-dev/packs
 ENVIRONMENT_NAME=jupyter-generic
 ENVIRONMENT_VERSION=2021-11-23
-ENVIRONMENT_HASH=56467d9f  # NOTE: not the final pack
+# NOTE: not the final pack
+ENVIRONMENT_HASH=56467d9f
 CONDA_FILE=$(PACK_PATH)/$(ENVIRONMENT_NAME)_$(ENVIRONMENT_VERSION)_$(ENVIRONMENT_HASH).tar.gz
 
 # VER2_R=$(VER_R)-$(GIT_REV)
