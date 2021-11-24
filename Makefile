@@ -105,7 +105,7 @@ push-julia: julia
 push-dev: check-khost standard
 	## NOTE: Saving and loading the whole image takes a long time. Pushing
 	##       partial changes to a DockerHub repo using `push-devhub` is faster
-	# time docker save aaltoscienceit/notebook-server-r-ubuntu:${VER_STD} | ssh ${KHOST} ssh jupyter-k8s-node2.cs.aalto.fi 'docker load'
+	# time docker save aaltoscienceit/notebook-server-r-ubuntu:${VER_STD} | ssh ${KHOST} ssh jupyter-k8s-node4.cs.aalto.fi 'docker load'
 	time docker save aaltoscienceit/notebook-server:${VER_STD} | ssh ${KHOST} ssh k8s-node4.cs.aalto.fi 'docker load'
 push-devhub: check-khost check-hubrepo standard
 	docker tag aaltoscienceit/notebook-server:${VER_STD} ${HUBREPO}/notebook-server:${VER_STD}
