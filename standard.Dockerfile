@@ -8,7 +8,7 @@ ARG ENVIRONMENT_VERSION
 ARG ENVIRONMENT_HASH
 ENV JUPYTER_SOFTWARE_IMAGE=${ENVIRONMENT_NAME}_${ENVIRONMENT_VERSION}_${ENVIRONMENT_HASH}
 
-ADD conda/${JUPYTER_SOFTWARE_IMAGE}.tar.gz /opt/conda
+ADD conda/${JUPYTER_SOFTWARE_IMAGE}.tar.gz /opt/software
 
 # Custom installations
 #RUN apt-get update && \
@@ -33,6 +33,8 @@ ADD conda/${JUPYTER_SOFTWARE_IMAGE}.tar.gz /opt/conda
 #     clean-layer.sh
 
 # ========================================
+
+RUN /opt/software/bin/python -m ipykernel install --prefix=/opt/conda --name 'jupyter-generic'
 
 ENV CC=clang CXX=clang++
 
