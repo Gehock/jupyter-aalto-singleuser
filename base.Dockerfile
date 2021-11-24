@@ -59,6 +59,9 @@ RUN \
         # Requires nbgrader>6
         # voila \
         && \
+    pip install --no-cache-dir \
+        envkernel \
+	&& \
     jupyter contrib nbextension install --sys-prefix && \
     python -m bash_kernel.install --sys-prefix && \
     ln -s /notebooks /home/jovyan/notebooks && \
