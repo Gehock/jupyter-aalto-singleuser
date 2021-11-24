@@ -34,7 +34,7 @@ ADD conda/${JUPYTER_SOFTWARE_IMAGE}.tar.gz /opt/software
 
 # ========================================
 
-RUN /opt/software/bin/python -m ipykernel install --prefix=/opt/conda --name 'jupyter-generic'
+RUN /opt/software/bin/python -m ipykernel install --prefix=/opt/conda --display-name="Python 3"
 
 ENV CC=clang CXX=clang++
 
