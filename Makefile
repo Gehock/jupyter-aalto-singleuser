@@ -43,7 +43,7 @@ base:
 standard:
 	@! grep -P '\t' -C 1 standard.Dockerfile || { echo "ERROR: Tabs in standard.Dockerfile" ; exit 1 ; }
 	mkdir -p conda
-	[ ! -e "${CONDA_FILE}" ] || cp -v "${CONDA_FILE}" conda
+	[ -e "${CONDA_FILE}" ] || cp -v "${CONDA_FILE}" conda
 	docker build -t ${REGISTRY}${GROUP}/notebook-server:$(VER_STD) . \
 		-f standard.Dockerfile \
 		--build-arg=VER_BASE=$(VER_BASE) \
