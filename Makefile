@@ -18,7 +18,7 @@ ENVIRONMENT_NAME=jupyter-generic
 ENVIRONMENT_VERSION=2021-11-23
 # NOTE: not the final pack
 ENVIRONMENT_HASH=56467d9f
-CONDA_FILE=$(PACK_PATH)/$(ENVIRONMENT_NAME)_$(ENVIRONMENT_VERSION)_$(ENVIRONMENT_HASH).tar.gz
+CONDA_FILE=$(ENVIRONMENT_NAME)_$(ENVIRONMENT_VERSION)_$(ENVIRONMENT_HASH).tar.gz
 
 # VER2_R=$(VER_R)-$(GIT_REV)
 TEST_MEM_LIMIT="--memory=2G"
@@ -43,7 +43,7 @@ base:
 standard:
 	@! grep -P '\t' -C 1 standard.Dockerfile || { echo "ERROR: Tabs in standard.Dockerfile" ; exit 1 ; }
 	mkdir -p conda
-	[ -e "conda/${CONDA_FILE}" ] || cp -v "${CONDA_FILE}" conda
+	[ -e "conda/${CONDA_FILE}" ] || cp -v "$(PACK_PATH)/${CONDA_FILE}" conda
 	docker build -t ${REGISTRY}${GROUP}/notebook-server:$(VER_STD) . \
 		-f standard.Dockerfile \
 		--build-arg=VER_BASE=$(VER_BASE) \
