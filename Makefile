@@ -51,6 +51,15 @@ default:
 
 full-rebuild: base standard test-standard
 
+buildtest: container-builder
+	chmod 600 file
+	docker buildx build .\
+		-t buildtest \
+		-f buildtest.Dockerfile \
+		--cache-to type=registry,ref=docker.io/gehock/notebook-server-base-cache:buildtest \
+		--cache-from type=registry,ref=docker.io/gehock/notebook-server-base-cache:buildtest \
+		--builder=jupyter \
+		--load
 
 base: pre-build container-builder
 	@! grep -P '\t' -C 1 base.Dockerfile || { echo "ERROR: Tabs in base.Dockerfile" ; exit 1 ; }
