@@ -6,7 +6,7 @@ UPSTREAM_MINIMAL_NOTEBOOK_VER=4d70cf8da953
 CRAN_URL=https://cran.microsoft.com/snapshot/2022-08-19/
 
 # base image - jupyter stuff only, not much software
-VER_BASE=6.1
+VER_BASE=6.2-dev1-cache
 # Set VER_BASE_CACHE to the version you want to use as the cache for the base
 # image. When bumping VER_BASE to build a new image, this should be set to the
 # previously published version for the duration of the build process.
