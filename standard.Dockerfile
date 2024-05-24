@@ -183,6 +183,12 @@ RUN \
         && \
     clean-layer.sh
 
+RUN \
+/opt/conda/bin/pip install --no-cache-dir \
+        topbar_hub_buttons \
+        && \
+    clean-layer.sh
+
 # ========================================
 
 # Duplicate of base, but hooks can update frequently and are small so
