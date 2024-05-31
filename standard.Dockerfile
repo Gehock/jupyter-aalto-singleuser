@@ -184,7 +184,11 @@ RUN \
     clean-layer.sh
 
 RUN \
-/opt/conda/bin/pip install --no-cache-dir \
+    /opt/conda/bin/mamba install -p /opt/conda -y \
+        'jupyterlab>=4' \
+        jupyter_server_terminals \
+        && \
+    /opt/conda/bin/pip install --no-cache-dir \
         topbar_hub_buttons \
         && \
     clean-layer.sh
