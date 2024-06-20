@@ -13,7 +13,7 @@ VER_BASE=6.4
 VER_BASE_CACHE=6.3
 
 # Python
-VER_STD=6.3.15-dev-sage
+VER_STD=6.3.15-dev2-sage
 VER_STD_BASE=6.3
 # See the comment for VER_BASE_CACHE
 VER_STD_CACHE=6.3.13

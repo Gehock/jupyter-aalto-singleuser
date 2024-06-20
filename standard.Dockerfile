@@ -193,7 +193,7 @@ RUN \
 RUN \
     rm /opt/software/share/jupyter/kernels/sagemath/doc && \
     /opt/conda/bin/jupyter kernelspec install \
-        --user /opt/software/share/jupyter/kernels/sagemath \
+        /opt/software/share/jupyter/kernels/sagemath \
         --name sagemath-dev
 
 # ========================================
