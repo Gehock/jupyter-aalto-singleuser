@@ -194,7 +194,9 @@ RUN \
     rm /opt/software/share/jupyter/kernels/sagemath/doc && \
     /opt/conda/bin/jupyter kernelspec install \
         /opt/software/share/jupyter/kernels/sagemath \
-        --name sagemath-dev
+        --name sagemath-dev\
+        && \
+    clean-layer.sh
 
 # ========================================
 
