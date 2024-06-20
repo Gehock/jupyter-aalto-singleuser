@@ -190,6 +190,12 @@ RUN \
         && \
     clean-layer.sh
 
+RUN \
+    rm /opt/software/share/jupyter/kernels/sagemath/doc && \
+    /opt/conda/bin/jupyter kernelspec install \
+        --user /opt/software/share/jupyter/kernels/sagemath \
+        --name sagemath-dev
+
 # ========================================
 
 # Duplicate of base, but hooks can update frequently and are small so
