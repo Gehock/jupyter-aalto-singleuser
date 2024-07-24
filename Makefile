@@ -29,6 +29,11 @@ VER_R_CACHE=6.3.15
 # OpenCV
 VER_CV=6.3.16
 VER_CV_CACHE=6.3.16
+# Scala
+VER_SCALA=6.3.15-dev-scala
+VER_SCALA_BASE=6.3
+# See the comment for VER_BASE_CACHE
+VER_SCALA_CACHE=6.3.15-dev-scala
 
 # Software for the standard image
 BUILD_PATH=/m/scicomp/software/anaconda-ci/aalto-jupyter-anaconda
@@ -160,6 +165,20 @@ opencv: pre-build container-builder
 		--cache-from type=registry,ref=aaltoscienceit/notebook-server-cache:opencv-$(VER_CV_CACHE)
 	#docker run --rm $(REGISTRY)$(GROUP)/notebook-server-opencv:$(VER_CV) conda env export -n base > environment-yml/$@-$(VER_CV).yml
 	#docker run --rm $(REGISTRY)$(GROUP)/notebook-server-opencv:$(VER_CV) conda list --revisions > conda-history/$@-$(VER_CV).yml
+scala: pre-build container-builder
+	@! grep -P '\t' -C 1 scala.Dockerfile || { echo "ERROR: Tabs in scala.Dockerfile" ; exit 1 ; }
+	docker buildx build . \
+		-t $(REGISTRY)$(GROUP)/notebook-server-scala:$(VER_SCALA) \
+		-f scala.Dockerfile \
+		--builder=jupyter \
+		--load \
+		--build-arg=BASE_IMAGE=$(BASE_REG_GROUP)/notebook-server-base:$(VER_SCALA_BASE) \
+		--build-arg=JUPYTER_SOFTWARE_IMAGE=$(ENVIRONMENT_NAME)_$(ENVIRONMENT_VERSION)_$(ENVIRONMENT_HASH) \
+		--build-arg=IMAGE_VERSION=$(REGISTRY)$(GROUP)/notebook-server:$(VER_SCALA) \
+		--build-arg=GIT_DESCRIBE=$(GIT_DESCRIBE) \
+		--cache-to type=registry,ref=aaltoscienceit/notebook-server-cache:scala-$(VER_SCALA) \
+		--cache-from type=registry,ref=aaltoscienceit/notebook-server-cache:scala-$(VER_SCALA) \
+		--cache-from type=registry,ref=aaltoscienceit/notebook-server-cache:scala-$(VER_SCALA_CACHE)
 
 update-environment:
 	cp $(ENVIRONMENT_FILE) environment.yml
@@ -223,6 +242,8 @@ push-devhub-base: check-khost check-hubrepo
 	docker tag ${BASE_REG_GROUP}/notebook-server-base:${VER_BASE} ${HUBREPO}/notebook-server-base:${VER_BASE}
 	docker push ${HUBREPO}/notebook-server-base:${VER_BASE}
 	ssh ${KHOST} ssh k8s-node4.cs.aalto.fi "docker pull ${HUBREPO}/notebook-server-base:${VER_BASE}"
+push-scala:
+	docker push ${REGISTRY}${GROUP}/notebook-server-scala:$(VER_SCALA)
 
 pull-standard: check-khost check-knodes
 	ssh ${KHOST} time pdsh -R ssh -w ${KNODES} "docker pull ${REGISTRY}${GROUP}/notebook-server:${VER_STD}"
