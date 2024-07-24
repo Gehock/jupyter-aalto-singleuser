@@ -16,7 +16,7 @@ RUN apt-get -y update && \
 RUN curl -Lo /usr/local/bin/coursier https://github.com/coursier/coursier/releases/download/v2.0.0-RC3-2/coursier && \
     chmod +x /usr/local/bin/coursier
 
-USER $NB_UID
+# USER $NB_UID
 
 # ensure the JAR of the CLI is in the coursier cache, in the image
 RUN /usr/local/bin/coursier --help
@@ -35,7 +35,7 @@ RUN ls -l install-kernels.sh && \
 
 # ========================================
 
-USER root
+# USER root
 
 # Duplicate of base, but hooks can update frequently and are small so
 # put them last.
