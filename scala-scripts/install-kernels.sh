@@ -14,6 +14,7 @@ for SCALA_FULL_VERSION in ${SCALA_VERSIONS}; do
     EXTRA_ARGS+=('--standalone')
   fi
   coursier bootstrap \
+      --standalone \
       -r jitpack \
       -i user -I user:sh.almond:scala-kernel-api_${SCALA_FULL_VERSION}:${ALMOND_VERSION} \
       sh.almond:scala-kernel_${SCALA_FULL_VERSION}:${ALMOND_VERSION} \
