@@ -33,6 +33,12 @@ RUN ls -l install-kernels.sh && \
     rm install-kernels.sh && \
     rm -rf .ivy2
 
+RUN \
+    /opt/conda/bin/pip install --no-cache-dir \
+        numpy \
+        && \
+    clean-layer.sh
+
 # ========================================
 
 # USER root
