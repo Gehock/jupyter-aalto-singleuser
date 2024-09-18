@@ -36,8 +36,18 @@ RUN ls -l install-kernels.sh && \
 RUN \
     /opt/conda/bin/pip install --no-cache-dir \
         numpy \
+        # For tests
+        nbconvert \
+        # A buggy dependency, pinning to a version so that our patch works
+        nbformat==5.8.0 \
         && \
     clean-layer.sh
+
+# during tests, nbconvert calls nbformat, which doesn't seem to behave well with the almond kernel
+COPY --chmod=555 scala-scripts/nbformat.diff /tmp
+RUN \
+    patch /opt/conda/lib/python3.10/site-packages/nbformat/v4/nbbase.py < /tmp/nbformat.diff && \
+    rm /tmp/nbformat.diff
 
 # ========================================
 

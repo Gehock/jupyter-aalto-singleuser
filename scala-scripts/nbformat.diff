@@ -1,0 +1,4 @@
+111c111
+<             traceback=content["traceback"],
+---
+>             traceback=content.get("traceback", ["no traceback"]),

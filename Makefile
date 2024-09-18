@@ -30,10 +30,10 @@ VER_R_CACHE=6.3.15
 VER_CV=6.3.16
 VER_CV_CACHE=6.3.16
 # Scala
-VER_SCALA=6.3.15-dev3-scala
+VER_SCALA=6.3.15-dev4-scala
 VER_SCALA_BASE=6.3
 # See the comment for VER_BASE_CACHE
-VER_SCALA_CACHE=6.3.15-dev2-scala
+VER_SCALA_CACHE=6.3.15-dev3-scala
 
 # Software for the standard image
 BUILD_PATH=/m/scicomp/software/anaconda-ci/aalto-jupyter-anaconda
@@ -208,6 +208,10 @@ test-standard-full: test-standard pre-test
 test-julia: pre-test
 	docker run --volume=$(TEST_DIR):/tests:ro ${TEST_MEM_LIMIT} ${REGISTRY}${GROUP}/notebook-server-julia:$(VER_JULIA) bash -c 'pwd; file=${TESTFILE:-*}; [ -z "$${file}" ] && file="/tests/julia/*" || file="/tests/julia/$${file}"; echo file $${file}; for x in $${file}; do echo Running $$x; /usr/local/bin/julia $$x ${TESTARGS} || exit 1; done'
 	rm -r $(TEST_DIR)
+test-scala: pre-test
+	docker run --volume=$(TEST_DIR):/tests:ro ${TEST_MEM_LIMIT} ${REGISTRY}${GROUP}/notebook-server-scala:$(VER_SCALA) bash -c 'pwd; file=${TESTFILE:-*}; [ -z "$${file}" ] && file="/tests/scala/*.ipynb" || file="/tests/scala/$${file}"; echo file $${file}; for x in $${file}; do echo Running $$x; python -m nbconvert --to notebook --ExecutePreprocessor.kernel_name=scala33 --output-dir=/tmp --execute $$x ${TESTARGS} || exit 1; done'
+	rm -r $(TEST_DIR)
+# python -m nbconvert --to notebook --execute /tmp/test_munit.ipynb --ExecutePreprocessor.kernel_name=scala33
 
 test-r-ubuntu: pre-test
 	docker run --volume=$(TEST_DIR):/tests:ro ${TEST_MEM_LIMIT} ${REGISTRY}${GROUP}/notebook-server-r-ubuntu:$(VER_R) Rscript -e "source('/tests/r/test_all.r')"
