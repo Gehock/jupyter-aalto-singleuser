@@ -21,7 +21,7 @@ for SCALA_FULL_VERSION in ${SCALA_VERSIONS}; do
       org.scalameta::munit:1.0.0-M7 \
       --default=true --sources \
       -o almond ${EXTRA_ARGS[@]}
-  ./almond --install --global --log info --metabrowse --id scala${SCALA_MAJOR_VERSION_TRIMMED} --display-name "Scala ${SCALA_MAJOR_VERSION}"
+  ./almond --install --log info --metabrowse --id scala${SCALA_MAJOR_VERSION_TRIMMED} --display-name "Scala ${SCALA_MAJOR_VERSION}"
   rm -f almond
 done
 echo Installation was successful

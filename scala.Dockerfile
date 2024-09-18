@@ -16,7 +16,7 @@ RUN apt-get -y update && \
 RUN curl -Lo /usr/local/bin/coursier https://github.com/coursier/coursier/releases/download/v2.0.0-RC3-2/coursier && \
     chmod +x /usr/local/bin/coursier
 
-# USER $NB_UID
+USER $NB_UID
 
 # ensure the JAR of the CLI is in the coursier cache, in the image
 RUN /usr/local/bin/coursier --help
@@ -28,10 +28,12 @@ ARG ALMOND_VERSION=0.14.0-RC15
 ARG SCALA_VERSIONS="3.3.3"
 
 COPY --chmod=555 scala-scripts/install-kernels.sh .
-RUN ls -l install-kernels.sh && \
+RUN \
     ./install-kernels.sh && \
     rm install-kernels.sh && \
     rm -rf .ivy2
+
+USER root
 
 RUN \
     /opt/conda/bin/pip install --no-cache-dir \
