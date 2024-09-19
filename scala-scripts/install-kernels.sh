@@ -14,11 +14,9 @@ for SCALA_FULL_VERSION in ${SCALA_VERSIONS}; do
     EXTRA_ARGS+=('--standalone')
   fi
   coursier bootstrap \
-      --standalone \
       -r jitpack \
       -i user -I user:sh.almond:scala-kernel-api_${SCALA_FULL_VERSION}:${ALMOND_VERSION} \
       sh.almond:scala-kernel_${SCALA_FULL_VERSION}:${ALMOND_VERSION} \
-      org.scalameta::munit:1.0.0-M7 \
       --default=true --sources \
       -o almond ${EXTRA_ARGS[@]}
   ./almond --install --log info --metabrowse --id scala${SCALA_MAJOR_VERSION_TRIMMED} --display-name "Scala ${SCALA_MAJOR_VERSION}"
