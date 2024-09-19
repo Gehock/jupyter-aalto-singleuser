@@ -49,8 +49,6 @@ RUN \
     rm install-kernels.sh && \
     rm -rf .ivy2
 
-RUN coursier fetch org.scalameta:munit_3:1.0.2
-
 # ========================================
 
 USER root
