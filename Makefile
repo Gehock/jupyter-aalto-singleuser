@@ -174,7 +174,7 @@ scala: pre-build container-builder
 		--load \
 		--build-arg=BASE_IMAGE=$(BASE_REG_GROUP)/notebook-server-base:$(VER_SCALA_BASE) \
 		--build-arg=JUPYTER_SOFTWARE_IMAGE=$(ENVIRONMENT_NAME)_$(ENVIRONMENT_VERSION)_$(ENVIRONMENT_HASH) \
-		--build-arg=IMAGE_VERSION=$(REGISTRY)$(GROUP)/notebook-server:$(VER_SCALA) \
+		--build-arg=IMAGE_VERSION=$(REGISTRY)$(GROUP)/notebook-server-scala:$(VER_SCALA) \
 		--build-arg=GIT_DESCRIBE=$(GIT_DESCRIBE) \
 		--cache-to type=registry,ref=aaltoscienceit/notebook-server-cache:scala-$(VER_SCALA) \
 		--cache-from type=registry,ref=aaltoscienceit/notebook-server-cache:scala-$(VER_SCALA) \
@@ -212,6 +212,9 @@ test-scala: pre-test
 	docker run --volume=$(TEST_DIR):/tests:ro ${TEST_MEM_LIMIT} ${REGISTRY}${GROUP}/notebook-server-scala:$(VER_SCALA) bash -c 'pwd; file=${TESTFILE:-*}; [ -z "$${file}" ] && file="/tests/scala/*.ipynb" || file="/tests/scala/$${file}"; echo file $${file}; for x in $${file}; do echo Running $$x; python -m nbconvert --to notebook --ExecutePreprocessor.kernel_name=scala33 --output-dir=/tmp --execute $$x ${TESTARGS} || exit 1; done'
 	rm -r $(TEST_DIR)
 # python -m nbconvert --to notebook --execute /tmp/test_munit.ipynb --ExecutePreprocessor.kernel_name=scala33
+
+run-scala:
+	docker run -it --rm -v/l/jupyter/mount:/notebooks -p 127.0.0.1:8888:8888 ${REGISTRY}${GROUP}/notebook-server-scala:$(VER_SCALA)
 
 test-r-ubuntu: pre-test
 	docker run --volume=$(TEST_DIR):/tests:ro ${TEST_MEM_LIMIT} ${REGISTRY}${GROUP}/notebook-server-r-ubuntu:$(VER_R) Rscript -e "source('/tests/r/test_all.r')"
