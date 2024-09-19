@@ -25,7 +25,7 @@ for SCALA_FULL_VERSION in ${SCALA_VERSIONS}; do
     --log info \
     --metabrowse \
     --id scala${SCALA_MAJOR_VERSION_TRIMMED} \
-    --auto-dependency org.scalameta:munit_3:1.0.2 \
+    --auto-dependency org.scalameta::munit:1.0.2 \
     --display-name "Scala ${SCALA_MAJOR_VERSION}"
   rm -f almond
 done
