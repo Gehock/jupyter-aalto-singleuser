@@ -33,7 +33,7 @@ VER_CV_CACHE=6.3.16
 VER_SCALA=6.3.15-scala-dev14
 VER_SCALA_BASE=6.3
 # See the comment for VER_BASE_CACHE
-VER_SCALA_CACHE=6.3.15-scala-dev13
+VER_SCALA_CACHE=6.3.15-scala-dev15
 
 # Software for the standard image
 BUILD_PATH=/m/scicomp/software/anaconda-ci/aalto-jupyter-anaconda

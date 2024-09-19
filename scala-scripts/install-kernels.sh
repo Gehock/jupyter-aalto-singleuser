@@ -13,19 +13,25 @@ for SCALA_FULL_VERSION in ${SCALA_VERSIONS}; do
   if [[ ${ALMOND_VERSION} == *-SNAPSHOT ]]; then
     EXTRA_ARGS+=('--standalone')
   fi
-  coursier bootstrap \
-      -r jitpack \
-      -i user -I user:sh.almond:scala-kernel-api_${SCALA_FULL_VERSION}:${ALMOND_VERSION} \
-      sh.almond:scala-kernel_${SCALA_FULL_VERSION}:${ALMOND_VERSION} \
-      --dependencies org.scalameta:munit_3:1.0.2 \
-      --default=true --sources \
-      -o almond ${EXTRA_ARGS[@]}
-  ./almond \
+  #coursier bootstrap \
+  #    -r jitpack \
+  #    -i user -I user:sh.almond:scala-kernel-api_${SCALA_FULL_VERSION}:${ALMOND_VERSION} \
+  #    sh.almond:scala-kernel_${SCALA_FULL_VERSION}:${ALMOND_VERSION} \
+  #    --dependencies org.scalameta:munit_3:1.0.2 \
+  #    --default=true --sources \
+  #    -o almond ${EXTRA_ARGS[@]}
+  #./almond \
+  #  --install \
+  #  --log info \
+  #  --metabrowse \
+  #  --id scala${SCALA_MAJOR_VERSION_TRIMMED} \
+  #  --display-name "Scala ${SCALA_MAJOR_VERSION}"
+  #rm -f almond
+  coursier launch almond --scala 3.3.0 \
+    --dependencies org.scalameta::munit:1.0.2 \
+    --id scala-with-munit \
     --install \
-    --log info \
-    --metabrowse \
-    --id scala${SCALA_MAJOR_VERSION_TRIMMED} \
-    --display-name "Scala ${SCALA_MAJOR_VERSION}"
-  rm -f almond
+    --display-name "Scala with MUnit"
+
 done
 echo Installation was successful
