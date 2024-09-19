@@ -16,6 +16,22 @@ RUN apt-get -y update && \
 RUN curl -Lo /usr/local/bin/coursier https://github.com/coursier/coursier/releases/download/v2.0.0-RC3-2/coursier && \
     chmod +x /usr/local/bin/coursier
 
+RUN \
+    /opt/conda/bin/pip install --no-cache-dir \
+        numpy \
+        # For tests
+        nbconvert \
+        # A buggy dependency, pinning to a version so that our patch works
+        nbformat==5.8.0 \
+        && \
+    clean-layer.sh
+
+# during tests, nbconvert calls nbformat, which doesn't seem to behave well with the almond kernel
+COPY --chmod=555 scala-scripts/nbformat.diff /tmp
+RUN \
+    patch /opt/conda/lib/python3.10/site-packages/nbformat/v4/nbbase.py < /tmp/nbformat.diff && \
+    rm /tmp/nbformat.diff
+
 USER $NB_UID
 
 # ensure the JAR of the CLI is in the coursier cache, in the image
@@ -35,27 +51,9 @@ RUN \
 
 RUN coursier fetch org.scalameta:munit_3:1.0.2
 
-USER root
-
-RUN \
-    /opt/conda/bin/pip install --no-cache-dir \
-        numpy \
-        # For tests
-        nbconvert \
-        # A buggy dependency, pinning to a version so that our patch works
-        nbformat==5.8.0 \
-        && \
-    clean-layer.sh
-
-# during tests, nbconvert calls nbformat, which doesn't seem to behave well with the almond kernel
-COPY --chmod=555 scala-scripts/nbformat.diff /tmp
-RUN \
-    patch /opt/conda/lib/python3.10/site-packages/nbformat/v4/nbbase.py < /tmp/nbformat.diff && \
-    rm /tmp/nbformat.diff
-
 # ========================================
 
-# USER root
+USER root
 
 # Duplicate of base, but hooks can update frequently and are small so
 # put them last.
