@@ -183,6 +183,15 @@ RUN \
         && \
     clean-layer.sh
 
+# compvis2024, RT#26771
+RUN \
+    /opt/conda/bin/pip install --no-cache-dir \
+        # TODO: remove version lock when updating to JL4
+        # The next version (v3.1.0) explicitly depends on JL4 npm packages
+        'lckr_jupyterlab_variableinspector<=3.0.7' \
+        && \
+    clean-layer.sh
+
 # ========================================
 
 # Duplicate of base, but hooks can update frequently and are small so
