@@ -32,8 +32,6 @@ RUN \
     patch /opt/conda/lib/python3.10/site-packages/nbformat/v4/nbbase.py < /tmp/nbformat.diff && \
     rm /tmp/nbformat.diff
 
-# USER $NB_UID
-
 # ensure the JAR of the CLI is in the coursier cache, in the image
 RUN /usr/local/bin/coursier --help
 
@@ -49,11 +47,13 @@ RUN \
     rm install-kernels.sh && \
     rm -rf .ivy2
 
+USER $NB_UID
+
 RUN coursier fetch --default --sources org.scalameta:munit_3:1.0.2
 
 # ========================================
 
-# USER root
+USER root
 
 # Duplicate of base, but hooks can update frequently and are small so
 # put them last.
