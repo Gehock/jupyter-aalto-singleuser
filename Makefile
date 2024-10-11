@@ -13,10 +13,10 @@ VER_BASE=6.4
 VER_BASE_CACHE=6.3
 
 # Python
-VER_STD=6.3.18
+VER_STD=6.3.18-cache
 VER_STD_BASE=6.3
 # See the comment for VER_BASE_CACHE
-VER_STD_CACHE=6.3.13
+VER_STD_CACHE=6.3.18
 
 # Julia
 VER_JULIA=6.3.17
@@ -106,9 +106,11 @@ standard: pre-build container-builder
 		--build-arg=JUPYTER_SOFTWARE_IMAGE=$(ENVIRONMENT_NAME)_$(ENVIRONMENT_VERSION)_$(ENVIRONMENT_HASH) \
 		--build-arg=IMAGE_VERSION=$(REGISTRY)$(GROUP)/notebook-server:$(VER_STD) \
 		--build-arg=GIT_DESCRIBE=$(GIT_DESCRIBE) \
-		--cache-to type=registry,ref=aaltoscienceit/notebook-server-cache:standard-$(VER_STD) \
-		--cache-from type=registry,ref=aaltoscienceit/notebook-server-cache:standard-$(VER_STD) \
-		--cache-from type=registry,ref=aaltoscienceit/notebook-server-cache:standard-$(VER_STD_CACHE)
+		--cache-to type=registry,image-manifest=true,oci-mediatypes=true,ref=$(REGISTRY)$(GROUP)/notebook-server:$(VER_STD) \
+		--cache-from type=registry,ref=$(REGISTRY)$(GROUP)/notebook-server:$(VER_STD) \
+		--cache-from type=registry,ref=$(REGISTRY)$(GROUP)/notebook-server:$(VER_STD_CACHE)
+#		--cache-from type=registry,ref=aaltoscienceit/notebook-server-cache:standard-$(VER_STD) \
+#		--cache-from type=registry,ref=aaltoscienceit/notebook-server-cache:standard-$(VER_STD_CACHE) \
 #	docker run --rm ${REGISTRY}${GROUP}/notebook-server:$(VER_STD) conda env export -n base > environment-yml/$@-$(VER_STD).yml
 #	docker run --rm ${REGISTRY}${GROUP}/notebook-server:$(VER_STD) conda list --revisions > conda-history/$@-$(VER_STD).yml
 #r:
